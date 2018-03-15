@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--<meta charset="utf-8">-->
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
+
+    <title>File Compression</title>
+
+    <!--Bootstrap CSS CDN-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+    <!--Our Custom CSS-->
+    <link href="../static/css/style.css" th:href="@{/css/style1.css}" rel="stylesheet"/>
+</head>
+<style>
+    /* The container */
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* Hide the browser's default radio button */
+    .container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    /* Create a custom radio button */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #eee;
+        border-radius: 50%;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the radio button is checked, add a blue background */
+    .container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the indicator (dot/circle) when checked */
+    .container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the indicator (dot/circle) */
+    .container .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+    }
+</style>
+<body>
+<div class="row divform">
+    <!-- fieldsets -->
+    <div class="row" style="margin-top:100px;">
+
+        <fieldset class="fieldsetForm">
+            <form method="POST" enctype="multipart/form-data" th:action="@{/upload}">
+                <div th:if="${result}" class="alert alert-success"
+                     role="alert" th:text=${result}></div>
+
+                <label class="radio-inline">
+                    <input type="radio" checked=true name="type" value="C">Compress
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="type" value="D">Decompress
+                </label>
+
+                <div class="input-group col-xs-12" style="margin-top:20px;">
+                    <input type="file" name="uploadFile" id="htmlFile" class="file" required/>
+                    <input type="text" class="form-control input-lg" disabled="disabled"
+                           placeholder="Upload file to compress"/>
+                    <span class="input-group-btn">
+                          <button class="browse btn btn-primary input-lg" type="button"><i
+                                  class="glyphicon glyphicon-search"></i> Browse</button>
+                        </span>
+                </div>
+
+                <div class="input-group col-xs-12" style="margin-top:20px; ">
+                    <input type="text" class="form-control input-lg" name="path"
+                           placeholder="Output Path" required/>
+                </div>
+
+                <div class="input-group col-xs-12" style="margin-top:20px;">
+                    <select class="form-control input-lg" name="algorithm" required>
+                        <option value="">Select Algorithm</option>
+                        <option value="Huffman">Huffman</option>
+                        <option value="GZIP">GZIP</option>
+                        <option value="LZW">LZW</option>
+                    </select>
+                </div>
+                <br/>
+                <input type="submit" class="btn btn-info" value="Submit" id="btnSubmit" style="margin-top:10px; "/>
+            </form>
+        </fieldset>
+    </div>
+</div>
+
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<!-- Bootstrap Js CDN -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.browse', function () {
+            var file = $(this).parent().parent().find('.file');
+            file.trigger('click');
+        });
+        $(document).on('change', '.file', function () {
+            $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+        });
+    });
+</script>
+</body>
+</html>
